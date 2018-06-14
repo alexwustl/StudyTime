@@ -1,27 +1,32 @@
 package com.amazonaws.lambda.studytime;
 
+import java.util.Map;
 import java.util.Optional;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
-import com.amazon.ask.model.LaunchRequest;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.request.Predicates;
+import com.amazonaws.lambda.studytime.util.State;
  
 public class FlipoverHandler implements RequestHandler {
  
      @Override
      public boolean canHandle(HandlerInput input) {
-    	 return false;
+    	 return input.matches(Predicates.intentName("Flipover"));
      }
  
      @Override
      public Optional<Response> handle(HandlerInput input) {
-         String speechText = "Welcome to the Study Time, powered by Quizlet";
+    	 Map<String, Object> sessionAttributes = input.getAttributesManager().getSessionAttributes();
+    	 State state = new State(sessionAttributes);
+    	 boolean front = state.flipOver();
+    	 String next = state.getNextQuestion();
+  		 state.save(sessionAttributes);
          return input.getResponseBuilder()
-                 .withSpeech(speechText)
-                 .withSimpleCard("HelloWorld", speechText)
-                 .withReprompt(speechText)
+                 .withSpeech((front?"You are now reading the front of the cards. ":"You are now reading the back of the cards. ")+next)
+                 .withReprompt(next)
+                 .withShouldEndSession(false)
                  .build();
      }
  

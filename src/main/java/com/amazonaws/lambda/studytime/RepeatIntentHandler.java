@@ -14,17 +14,17 @@ public class RepeatIntentHandler implements RequestHandler {
  
      @Override
      public boolean canHandle(HandlerInput input) {
-    	 return input.matches(Predicates.intentName("AMAZON.RepeatIntent").and(Predicates.sessionAttribute(Attributes.STATE_KEY, Attributes.FLASHCARD)));
+    	 return input.matches(Predicates.intentName("AMAZON.RepeatIntent").and(Predicates.sessionAttribute(Attributes.STATE_KEY, Attributes.FLASH_STATE)));
      }
  
      @Override
      public Optional<Response> handle(HandlerInput input) {
     	 Map<String, Object> sessionAttributes = input.getAttributesManager().getSessionAttributes();
-    	 State state = (State) sessionAttributes.get(Attributes.JSON_DATA);
-    	 String response = state.repeatQuestion();
+    	 State state = new State(sessionAttributes);
+    	 String repeatQuestion = state.getNextQuestion();
          return input.getResponseBuilder()
-                 .withSpeech(response)
-                 .withReprompt(response)
+                 .withSpeech(repeatQuestion)
+                 .withReprompt(repeatQuestion)
                  .withShouldEndSession(false)
                  .build();
      }

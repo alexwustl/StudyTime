@@ -12,13 +12,13 @@ public class EndSessionRequest implements RequestHandler {
  
 	@Override
     public boolean canHandle(HandlerInput input) {
-		return false;
-       // return input.matches(Predicates.requestType(SessionEndedRequest.class));
+        return input.matches(Predicates.requestType(SessionEndedRequest.class));
     }
 
     @Override
     public Optional<Response> handle(HandlerInput input) {
-        return input.getResponseBuilder().build();
+        return input.getResponseBuilder()
+				.build();
     }
  
 }
