@@ -21,7 +21,7 @@ public class RepeatIntentHandler implements RequestHandler {
      public Optional<Response> handle(HandlerInput input) {
     	 Map<String, Object> sessionAttributes = input.getAttributesManager().getSessionAttributes();
     	 State state = new State(sessionAttributes);
-    	 String repeatQuestion = state.getNextQuestion();
+    	 String repeatQuestion = state.repeatQuestion();
          return input.getResponseBuilder()
                  .withSpeech(repeatQuestion)
                  .withReprompt(repeatQuestion)

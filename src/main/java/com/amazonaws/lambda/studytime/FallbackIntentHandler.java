@@ -18,7 +18,7 @@ public class FallbackIntentHandler implements RequestHandler {
      @Override
      public Optional<Response> handle(HandlerInput input) {
          return input.getResponseBuilder()
-                 .withSpeech("I'm sorry I didn't understand that")
+                 .withSpeech("I'm sorry I didn't understand that, if you are studying and want the answer and the next question, say next.")
                  .withReprompt(ResponseGeneral.HELP)
                  .withShouldEndSession(false)
                  .build();

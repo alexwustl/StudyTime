@@ -17,9 +17,9 @@ public class StopIntentHandler implements RequestHandler {
      @Override
      public Optional<Response> handle(HandlerInput input) {
          return input.getResponseBuilder()
-                 .withSpeech("Thank you for using Study Time.")
-                 .withShouldEndSession(true)
-                 .build();
+             .withSpeech("Thank you for using Study Time.")
+             .withShouldEndSession(true)
+             .build();
      }
  
 }

@@ -98,8 +98,9 @@ public class State {
 	
 	public String getPreviousQuestion() {
 		String result = "";
-		if(currentQuestion>0) {
-			result= "The previous question was "+ (readFront?getFront(--currentQuestion):getBack(--currentQuestion))+".";
+		if(currentQuestion>1) {
+			currentQuestion--;
+			result= "The question is "+ (readFront?getFront(currentQuestion-1):getBack(currentQuestion-1))+".";
 		} else {
 			result="You are already at the beginning, you can say repeat to repeat the question.";
 		}	 

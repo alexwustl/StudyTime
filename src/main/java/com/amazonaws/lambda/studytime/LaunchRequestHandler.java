@@ -23,8 +23,6 @@ public class LaunchRequestHandler implements RequestHandler {
 	static final Logger logger = LogManager.getLogger(LaunchRequestHandler.class);
 	@Override
 	public boolean canHandle(HandlerInput input) {
-		System.out.println(input.getRequestEnvelope().getRequest().getType());
-		System.out.println(input.getRequestEnvelope().toString());
 		return input.matches(Predicates.requestType(LaunchRequest.class));
 	}
 

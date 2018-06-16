@@ -7,13 +7,14 @@ import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.request.Predicates;
+import com.amazonaws.lambda.studytime.util.Attributes;
 import com.amazonaws.lambda.studytime.util.State;
 
 public class ShuffleOnIntentHandler implements RequestHandler {
 
 	@Override
 	public boolean canHandle(HandlerInput input) {
-		return input.matches(Predicates.intentName("AMAZON.SuffleOnIntent"));
+		return input.matches(Predicates.intentName("AMAZON.ShuffleOnIntent").and(Predicates.sessionAttribute(Attributes.STATE_KEY, Attributes.FLASH_STATE)));
 	}
 
 	@Override
