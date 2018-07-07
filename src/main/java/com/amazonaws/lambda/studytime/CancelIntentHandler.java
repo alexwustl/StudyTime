@@ -19,13 +19,20 @@ public class CancelIntentHandler implements RequestHandler {
  
      @Override
      public Optional<Response> handle(HandlerInput input) {
-    	 Map<String, Object> sessionAttributes = input.getAttributesManager().getSessionAttributes();
-    	 sessionAttributes.put(Attributes.STATE_KEY,Attributes.START_STATE);
-         return input.getResponseBuilder()
-                 .withSpeech("Cancelling")
-                 .withReprompt(ResponseGeneral.HELP)
-                 .withShouldEndSession(false)
-                 .build();
+    	 if(!input.matches(Predicates.sessionAttribute(Attributes.STATE_KEY, Attributes.START_STATE))) {
+	    	 Map<String, Object> sessionAttributes = input.getAttributesManager().getSessionAttributes();
+	    	 sessionAttributes.put(Attributes.STATE_KEY,Attributes.START_STATE);
+	         return input.getResponseBuilder()
+	                 .withSpeech("Cancelling")
+	                 .withReprompt(ResponseGeneral.HELP)
+	                 .withShouldEndSession(false)
+	                 .build();
+    	 } else {
+    		 return input.getResponseBuilder()
+    	             .withSpeech("Thank you for using Study Time.")
+    	             .withShouldEndSession(true)
+    	             .build();
+    	 }
      }
  
 }
