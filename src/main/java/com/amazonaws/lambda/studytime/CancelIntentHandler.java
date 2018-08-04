@@ -19,7 +19,7 @@ public class CancelIntentHandler implements RequestHandler {
  
      @Override
      public Optional<Response> handle(HandlerInput input) {
-    	 if(!input.matches(Predicates.sessionAttribute(Attributes.STATE_KEY, Attributes.START_STATE))) {
+    	 if(input.matches(Predicates.sessionAttribute(Attributes.STATE_KEY, Attributes.FLASH_STATE))) {
 	    	 Map<String, Object> sessionAttributes = input.getAttributesManager().getSessionAttributes();
 	    	 sessionAttributes.put(Attributes.STATE_KEY,Attributes.START_STATE);
 	         return input.getResponseBuilder()

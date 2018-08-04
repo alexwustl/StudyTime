@@ -39,8 +39,14 @@ public class State {
 	public State(Map<String, Object> sessionAttributes) {
 		//Because the arrays were being reserialized as ArrayLists, this guarantees correct class
 		ObjectMapper mapper = new ObjectMapper();
-		this.data = mapper.valueToTree(sessionAttributes.get("data"));
-		this.currentSet=mapper.valueToTree(sessionAttributes.get("currentSet"));
+		if(sessionAttributes.get("data")!=null)
+			this.data = mapper.valueToTree(sessionAttributes.get("data"));
+		else
+			this.data = JsonNodeFactory.instance.arrayNode();
+		if(sessionAttributes.get("currentSet")!=null)
+			this.currentSet=mapper.valueToTree(sessionAttributes.get("currentSet"));
+		else
+			this.currentSet=JsonNodeFactory.instance.arrayNode();
 		this.readFront= (boolean) sessionAttributes.get("readFront");
 		this.currentQuestion=(int) sessionAttributes.get("currentQuestion");
 	}

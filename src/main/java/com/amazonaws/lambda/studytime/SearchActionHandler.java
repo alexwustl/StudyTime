@@ -1,5 +1,7 @@
 package com.amazonaws.lambda.studytime;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -8,9 +10,13 @@ import org.apache.logging.log4j.Logger;
 
 import com.amazon.ask.dispatcher.request.handler.HandlerInput;
 import com.amazon.ask.dispatcher.request.handler.RequestHandler;
+import com.amazon.ask.model.DialogState;
+import com.amazon.ask.model.Directive;
+import com.amazon.ask.model.Intent;
 import com.amazon.ask.model.IntentRequest;
 import com.amazon.ask.model.Response;
 import com.amazon.ask.model.Slot;
+import com.amazon.ask.model.dialog.DelegateDirective;
 import com.amazon.ask.request.Predicates;
 import com.amazonaws.lambda.studytime.util.Attributes;
 import com.amazonaws.lambda.studytime.util.QuestionList;
@@ -30,6 +36,17 @@ public class SearchActionHandler implements RequestHandler {
 		IntentRequest intentRequest = (IntentRequest) input.getRequestEnvelope().getRequest();
 		Slot slot = (Slot) intentRequest.getIntent().getSlots().get("flashCardSet");
 		String request = slot.getValue();
+		if(request == null || request == "") {
+			if(intentRequest.getDialogState() != DialogState.COMPLETED) {
+				return input.getResponseBuilder().addDelegateDirective(intentRequest.getIntent())
+						.withShouldEndSession(false)
+						.build();
+			}		
+			return input.getResponseBuilder()
+					.withSpeech("Sorry I didn't catch that, please try again.")
+					.withShouldEndSession(false)
+					.build();
+		}
 		State state = new State(sessionAttributes);
 		QuestionList questions = new QuestionList(state.changeSetOptions(request));
 		String next = questions.getNextOption();
